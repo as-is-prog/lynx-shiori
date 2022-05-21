@@ -21,10 +21,10 @@ pub fn parse(source: &dyn ParseSource) -> ShioriProtocol {
     let nl_string = source.next_line();
     let nl = nl_string.as_str();
 
-    if nl.starts_with(consts::RequestMethod::GET.as_str()) {
-        ShioriProtocol::Request(request::parse(source, consts::RequestMethod::GET))
-    } else if nl.starts_with(consts::RequestMethod::GET.as_str()) {
-        ShioriProtocol::Request(request::parse(source, consts::RequestMethod::GET))
+    if nl.starts_with(consts::RequestMethod::Get.as_str()) {
+        ShioriProtocol::Request(request::parse(source, consts::RequestMethod::Get))
+    } else if nl.starts_with(consts::RequestMethod::Get.as_str()) {
+        ShioriProtocol::Request(request::parse(source, consts::RequestMethod::Get))
     } else if nl.starts_with(consts::SHIORI_REQUEST_HEADER_STARTS) {
         ShioriProtocol::Response(ResponseBody {})
     } else if nl.is_empty() {
