@@ -45,6 +45,9 @@ fn main() {
                 println!("[Error] reason: {reason}");
                 break;
             }
+            ShiolinkProtocol::Empty => {
+                // do nothing.
+            }
         }
     }
 }

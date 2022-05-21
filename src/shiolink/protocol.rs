@@ -1,5 +1,3 @@
-use std::ops::Index;
-
 use crate::shiori::{self, protocol::ShioriProtocol};
 use shiori::parse_interface::ParseSource;
 
@@ -8,6 +6,7 @@ pub enum Protocol {
     Sync { sync_str: String },
     Request(shiori::protocol::RequestBody),
     Unload,
+    Empty, /* Empty line */
     ParseError { reason: String },
 }
 
@@ -40,5 +39,6 @@ fn shiori_request_parse(source: &dyn ParseSource) -> Protocol {
         ShioriProtocol::ParseError => Protocol::ParseError {
             reason: "parse error".to_string(),
         },
+        ShioriProtocol::Empty => todo!(),
     }
 }
