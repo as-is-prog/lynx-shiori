@@ -13,7 +13,11 @@ use felis::Felis;
 struct MyGhost {}
 impl Ghost for MyGhost {
     fn request(&self, event_id: &str, references: Vec<&str>) -> String {
-        return "¥w¥w¥w¥wtest str".to_string();
+        if event_id == "OnBoot" {
+            return "¥w¥w¥w¥wtest str".to_string();
+        } else {
+            return "".to_string();
+        }
     }
 }
 

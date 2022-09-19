@@ -18,7 +18,7 @@ impl Felis<'_> {
     pub fn request(&self, request: shiori::protocol::RequestBody) -> String {
         let references = vec!["a", "b", "c"];
 
-        self.ghost.request("aaaa", references)
+        self.ghost.request(&request.id, references)
     }
 
     pub fn unload(&self) {}
