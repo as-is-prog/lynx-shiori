@@ -1,4 +1,12 @@
-use super::{consts, parse_interface::ParseSource, request, response};
+use std::fmt;
+
+use crate::shiori::consts::SHIORI_NEWLINE;
+
+use super::{
+    consts::{self},
+    parse_interface::ParseSource,
+    request, response,
+};
 
 pub struct RawShioriHeader {
     pub header: String,
@@ -31,6 +39,67 @@ impl ResponseBody {
         }
 
         return vec;
+    }
+}
+
+impl fmt::Display for ResponseBody {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let ret = write!(
+            f,
+            "{} {}{}",
+            consts::SHIORI_PROTOCOL_VERSION_3_0,
+            consts::SHIORI_PROTOCOL_STATUS_CODE_200,
+            consts::SHIORI_NEWLINE
+        );
+        if ret.is_err() {
+            return ret;
+        }
+
+        let ret = write!(
+            f,
+            "{}{}{}{}",
+            consts::SHIORI_PROTOCOL_HEADER_CHARSET_STARTS,
+            consts::SHIORI_PROTOCOL_HEADER_SPLIT,
+            match self.charset.is_empty() {
+                true => consts::SHIORI_PROTOCOL_HEADER_CHARSET_DEFAULT,
+                false => &self.charset,
+            },
+            consts::SHIORI_NEWLINE
+        );
+        if ret.is_err() {
+            return ret;
+        }
+
+        let ret = write!(
+            f,
+            "{}{}{}{}",
+            consts::SHIORI_PROTOCOL_HEADER_SENDER_STARTS,
+            consts::SHIORI_PROTOCOL_HEADER_SPLIT,
+            match self.sender.is_empty() {
+                true => consts::SHIORI_PROTOCOL_HEADER_SENDER_DEFAULT,
+                false => &self.sender,
+            },
+            consts::SHIORI_NEWLINE
+        );
+        if ret.is_err() {
+            return ret;
+        }
+
+        if self.value.is_some() {
+            let ret = write!(
+                f,
+                "{}{}{}{}",
+                consts::SHIORI_PROTOCOL_HEADER_VALUE_STARTS,
+                consts::SHIORI_PROTOCOL_HEADER_SPLIT,
+                self.value.as_ref().unwrap(),
+                consts::SHIORI_NEWLINE
+            );
+            if ret.is_err() {
+                return ret;
+            }
+        }
+
+        return ret;
     }
 }
 

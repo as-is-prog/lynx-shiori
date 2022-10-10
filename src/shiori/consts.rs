@@ -1,8 +1,12 @@
 use std::char::from_u32;
 use strum_macros::{Display, EnumString};
 
-pub(super) const SHIORI_PROTOCOL_VERSION_STARTS: &str = "SHIORI/";
+pub(super) const SHIORI_NEWLINE: &str = "\r\n";
 pub(super) const SHIORI_PROTOCOL_VERSION_3_0: &str = "SHIORI/3.0";
+pub(super) const SHIORI_PROTOCOL_HEADER_CHARSET_DEFAULT: &str = "UTF-8";
+pub(super) const SHIORI_PROTOCOL_HEADER_SENDER_DEFAULT: &str = "Lynx";
+
+pub(super) const SHIORI_PROTOCOL_VERSION_STARTS: &str = "SHIORI/";
 
 #[derive(EnumString, Display)]
 pub enum RequestMethod {
@@ -11,6 +15,8 @@ pub enum RequestMethod {
     #[strum(serialize = "NOTIFY")]
     Notify, /* Notify method */
 }
+
+pub(super) const SHIORI_PROTOCOL_HEADER_SPLIT: &str = ": ";
 
 pub(super) const SHIORI_PROTOCOL_HEADER_CHARSET_STARTS: &str = "Charset";
 
