@@ -31,22 +31,22 @@ fn main() {
         let req: ShiolinkProtocol = shiolink::protocol::parse(&parse_source);
         match req {
             ShiolinkProtocol::Load { load_dir } => {
-                println!("[Load] loaddir:{load_dir}");
+                // println!("[Load] loaddir:{load_dir}");
                 felis.load(&load_dir);
             }
             ShiolinkProtocol::Sync { sync_str } => {
-                println!("[Sync] syncstr:{sync_str}");
+                print!("*S:{sync_str}\r\n");
             }
             ShiolinkProtocol::Request(body) => {
-                println!("{}", felis.request(body));
+                print!("{}\r\n", felis.request(body));
             }
             ShiolinkProtocol::Unload => {
-                println!("[Unload]");
+                // println!("[Unload]");
                 felis.unload();
                 break;
             }
             ShiolinkProtocol::ParseError { reason } => {
-                println!("[Error] reason: {reason}");
+                // println!("[Error] reason: {reason}");
                 break;
             }
             ShiolinkProtocol::Empty => {
