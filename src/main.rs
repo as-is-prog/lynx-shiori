@@ -13,7 +13,11 @@ use felis::Felis;
 struct MyGhost {}
 impl Ghost for MyGhost {
     fn request(&self, event_id: &str, references: Vec<&str>) -> String {
-        return "¥w¥w¥w¥wtest str".to_string();
+        if event_id == "OnBoot" {
+            return "¥w¥w¥w¥wtest str".to_string();
+        } else {
+            return "".to_string();
+        }
     }
 }
 
@@ -27,23 +31,26 @@ fn main() {
         let req: ShiolinkProtocol = shiolink::protocol::parse(&parse_source);
         match req {
             ShiolinkProtocol::Load { load_dir } => {
-                println!("[Load] loaddir:{load_dir}");
+                // println!("[Load] loaddir:{load_dir}");
                 felis.load(&load_dir);
             }
             ShiolinkProtocol::Sync { sync_str } => {
-                println!("[Sync] syncstr:{sync_str}");
+                print!("*S:{sync_str}\r\n");
             }
             ShiolinkProtocol::Request(body) => {
-                println!("{}", felis.request(body));
+                print!("{}\r\n", felis.request(body));
             }
             ShiolinkProtocol::Unload => {
-                println!("[Unload]");
+                // println!("[Unload]");
                 felis.unload();
                 break;
             }
             ShiolinkProtocol::ParseError { reason } => {
-                println!("[Error] reason: {reason}");
+                // println!("[Error] reason: {reason}");
                 break;
+            }
+            ShiolinkProtocol::Empty => {
+                // do nothing.
             }
         }
     }

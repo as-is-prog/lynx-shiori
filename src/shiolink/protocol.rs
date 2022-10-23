@@ -1,5 +1,3 @@
-use std::ops::Index;
-
 use crate::shiori::{self, protocol::ShioriProtocol};
 use shiori::parse_interface::ParseSource;
 
@@ -8,6 +6,7 @@ pub enum Protocol {
     Sync { sync_str: String },
     Request(shiori::protocol::RequestBody),
     Unload,
+    Empty, /* Empty line */
     ParseError { reason: String },
 }
 
@@ -25,12 +24,12 @@ pub fn parse(source: &dyn ParseSource) -> Protocol {
             sync_str: get_nl_body().to_string(),
         },
         "*U:" => Protocol::Unload,
-        &_ => shiori_request_parse(source),
+        &_ => shiori_request_parse(nl_string, source),
     };
 }
 
-fn shiori_request_parse(source: &dyn ParseSource) -> Protocol {
-    let result = shiori::protocol::parse(source);
+fn shiori_request_parse(first_nl: String, source: &dyn ParseSource) -> Protocol {
+    let result = shiori::protocol::parse(first_nl, source);
 
     match result {
         ShioriProtocol::Request(body) => Protocol::Request(body),
@@ -40,5 +39,6 @@ fn shiori_request_parse(source: &dyn ParseSource) -> Protocol {
         ShioriProtocol::ParseError => Protocol::ParseError {
             reason: "parse error".to_string(),
         },
+        ShioriProtocol::Empty => todo!(),
     }
 }
